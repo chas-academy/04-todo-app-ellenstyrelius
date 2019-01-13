@@ -39,6 +39,9 @@ class TodoController extends Controller {
 
     public function delete($urlParams)
     {
+      /////////////////////////////////////////
+      // WHAT'S UP MED $body???? ANVÄNDS EJ JU
+
         $body = filter_body();
         $result = TodoItem::deleteTodo($urlParams ["id"]);
 

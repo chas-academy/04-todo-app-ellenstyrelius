@@ -8,16 +8,23 @@ class TodoItem extends Model
 
     public static function createTodo($title)
     {
-        $query = "INSERT INTO todos (title, created, completed) 
-                VALUES (:title, :created, :completed)";
-        $statement = static::$db->query($query);
-        // $foo = static::$db->bind();
-        $result = static::$db->result();
+        try {
+            $query = "INSERT INTO todos (title, created, completed) 
+                VALUES (:title, now(), 'false')";
+            $statement = self::$db->query($query);
+            self::$db->bind(':title', $title);
+            self::$db->execute();
+            $result = static::findAll();
 
+            if (!empty($result)) {
+                return $result;
+            } else {
+                throw new \Exception("Sry, something went wrong :(");
+            }
 
-
-        // TODO: Implement me!
-        // Create a new todo
+        } catch (PDOException $err) {
+            return $err->getMessage();
+        }
     }
 
     // // public static function updateTodo($todoId, $title, $completed = null)
@@ -28,30 +35,21 @@ class TodoItem extends Model
 
     public static function deleteTodo($todoId)
     {
-        // $query = "DELETE FROM todos WHERE id = :id";
-        // $statement = static::$db->query($query);
-        // static::$db->execute();
-
-
         try {
             $query = "DELETE FROM todos WHERE id = :id";
             $statement = self::$db->query($query);
             self::$db->bind(':id', $todoId);
             self::$db->execute();
-
             $result = static::findAll();
-            return $result;
 
-            // if (!empty($result)) {
-            //     return $result;
-            // } else {
-            //     throw new \Exception("Error occured when trying to delete todo item.");
-            // }
+            if (!empty($result)) {
+                return $result;
+            } else {
+                throw new \Exception("Sry, something went wrong :(");
+            }
         } catch (PDOException $err) {
             return $err->getMessage();
         }
-        // TODO: Implement me!
-        // Delete a specific todo
     }
     
     // (Optional bonus methods below)
