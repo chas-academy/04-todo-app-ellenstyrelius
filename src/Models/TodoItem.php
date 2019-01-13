@@ -13,8 +13,7 @@ class TodoItem extends Model
                 VALUES (:title, now(), 'false')";
             $statement = self::$db->query($query);
             self::$db->bind(':title', $title);
-            self::$db->execute();
-            $result = static::findAll();
+            $result = self::$db->execute();
 
             if (!empty($result)) {
                 return $result;
@@ -39,8 +38,7 @@ class TodoItem extends Model
             $query = "DELETE FROM todos WHERE id = :id";
             $statement = self::$db->query($query);
             self::$db->bind(':id', $todoId);
-            self::$db->execute();
-            $result = static::findAll();
+            $result = self::$db->execute();
 
             if (!empty($result)) {
                 return $result;
