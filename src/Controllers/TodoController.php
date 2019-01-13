@@ -39,10 +39,15 @@ class TodoController extends Controller {
 
     public function delete($urlParams)
     {
-      // TODO: Implement me!
+        $body = filter_body();
+        $result = TodoItem::deleteTodo($urlParams ["id"]);
+
+        if ($result) {
+          $this->redirect('/');
+        }
     }
 
-    /**
+    /** 
      * OPTIONAL Bonus round!
      * 
      * The two methods below are optional, feel free to try and complete them
