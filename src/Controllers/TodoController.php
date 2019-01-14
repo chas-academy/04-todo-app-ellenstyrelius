@@ -63,7 +63,9 @@ class TodoController extends Controller {
 
     public function clear()
     {
-        $result = TodoItem::clearCompletedTodos();
+        $completed = isset($body['status']) ? 1 : 0;
+
+        $result = TodoItem::clearCompletedTodos($completed);
 
         if ($result) {
           $this->redirect('/');

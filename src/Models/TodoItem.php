@@ -85,10 +85,24 @@ class TodoItem extends Model
     //     // This is to toggle all todos either as completed or not completed
     // }
 
-    public static function clearCompletedTodos()
+    public static function clearCompletedTodos($completed)
     {
-        // TODO: Implement me!
-        // This is to delete all the completed todos from the database
+        try {
+            $query = "DELETE FROM todos WHERE completed = 'true'";
+
+            $statement = self::$db->query($query);
+            // self::$db->bind(':id', $todoId);
+
+            $result = self::$db->execute();
+
+            if (!empty($result)) {
+                return $result;
+            } else {
+                throw new \Exception("Sry, something went wrong with the deleting :(");
+            }
+        } catch (PDOException $err) {
+            return $err->getMessage();
+        }
     }
 
 }
