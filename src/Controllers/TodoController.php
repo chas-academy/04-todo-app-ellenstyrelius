@@ -28,9 +28,11 @@ class TodoController extends Controller {
 
         $todoId = $urlParams['id'];
 
+        $title = $body['title'];
+
         $completed = isset($body['status']) ? 1 : 0;
 
-        $result = TodoItem::updateTodo($todoId, $completed);
+        $result = TodoItem::updateTodo($todoId, $title, $completed);
 
         if ($result) {
             $this->redirect('/');
@@ -61,6 +63,11 @@ class TodoController extends Controller {
 
     public function clear()
     {
+        $result = TodoItem::clearCompletedTodos();
+
+        if ($result) {
+          $this->redirect('/');
+        }
       // (OPTIONAL) TODO: This action should remove all completed todos from the table.
     }
 

@@ -10,7 +10,7 @@ class TodoItem extends Model
     {
         try {
             $query = "INSERT INTO todos (title, created, completed) 
-                VALUES (:title, now(), 'false')";
+            VALUES (:title, now(), 'false')";
 
             $statement = self::$db->query($query);
             self::$db->bind(':title', $title);
@@ -28,13 +28,16 @@ class TodoItem extends Model
         }
     }
 
-    public static function updateTodo($todoId,$completed)
+    public static function updateTodo($todoId, $title, $completed)
     {
         try {
-            $query = "UPDATE todos SET completed = :completed WHERE id = :id";
+            $query = "UPDATE todos 
+            SET completed = :completed, title = :title
+            WHERE id = :id";
 
             $statement = self::$db->query($query);
             self::$db->bind(':id', $todoId);
+            self::$db->bind(':title', $title);
 
             if ($completed === 1) {
                 self::$db->bind(':completed', 'true');
@@ -82,10 +85,10 @@ class TodoItem extends Model
     //     // This is to toggle all todos either as completed or not completed
     // }
 
-    // public static function clearCompletedTodos()
-    // {
-    //     // TODO: Implement me!
-    //     // This is to delete all the completed todos from the database
-    // }
+    public static function clearCompletedTodos()
+    {
+        // TODO: Implement me!
+        // This is to delete all the completed todos from the database
+    }
 
 }
