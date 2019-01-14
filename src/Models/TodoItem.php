@@ -4,15 +4,17 @@ namespace Todo;
 
 class TodoItem extends Model
 {
-    const TABLENAME = 'todos'; // This is used by the abstract model, don't touch
+    const TABLENAME = 'todos';
 
     public static function createTodo($title)
     {
         try {
             $query = "INSERT INTO todos (title, created, completed) 
                 VALUES (:title, now(), 'false')";
+
             $statement = self::$db->query($query);
             self::$db->bind(':title', $title);
+
             $result = self::$db->execute();
 
             if (!empty($result)) {
@@ -30,14 +32,16 @@ class TodoItem extends Model
     {
         try {
             $query = "UPDATE todos SET completed = :completed WHERE id = :id";
+
             $statement = self::$db->query($query);
             self::$db->bind(':id', $todoId);
+
             if ($completed === 1) {
                 self::$db->bind(':completed', 'true');
             } elseif ($completed === 0) {
                 self::$db->bind(':completed', 'false');
             }
-            // self::$db->bind(':completed', $completed);
+           
             $result = self::$db->execute();
 
             if (!empty($result)) {
@@ -49,16 +53,16 @@ class TodoItem extends Model
         } catch (PDOException $err) {
             return $err->getMessage();
         }
-        // TODO: Implement me!
-        // Update a specific todo
     }
 
     public static function deleteTodo($todoId)
     {
         try {
             $query = "DELETE FROM todos WHERE id = :id";
+
             $statement = self::$db->query($query);
             self::$db->bind(':id', $todoId);
+
             $result = self::$db->execute();
 
             if (!empty($result)) {
