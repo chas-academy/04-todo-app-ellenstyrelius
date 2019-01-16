@@ -89,12 +89,21 @@ class TodoItem extends Model
             $query = "UPDATE todos 
             SET completed = :completed";
 
-            foreach ($todos as $todo) {
-                if ($todo['completed'] === 'false') {
-                    self::$db->bind(':completed', 'true');
-                } elseif ($todo['completed'] === 'true') {
-                    self::$db->bind(':completed', 'false');
+            $statement = self::$db->query($query);
+
+            $todosLeft = count(array_filter(
+                $todos, function($todo) {
+                    return $todo['completed'] === "false";
                 }
+            )
+            );
+
+            // die(var_dump($todosLeft));
+
+            if ($todosLeft === 0) {
+                self::$db->bind(':completed', 'false');
+            } elseif ($todosLeft >= 1) {
+                self::$db->bind(':completed', 'true');
             }
 
             $result = self::$db->execute();
