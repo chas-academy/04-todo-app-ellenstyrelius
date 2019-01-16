@@ -9,6 +9,7 @@ class TodoController extends Controller {
     public function get()
     {
         $todos = TodoItem::findAll();
+
         return $this->view('index', ['todos' => $todos]);
     }
 
@@ -19,7 +20,7 @@ class TodoController extends Controller {
 
         if ($result) {
           $this->redirect('/');
-        }
+        } 
     }
 
     public function update($urlParams)
@@ -36,8 +37,6 @@ class TodoController extends Controller {
 
         if ($result) {
             $this->redirect('/');
-        } else {
-          throw new \Exception("Sry, something went wrong with the updating:(");
         }
     }
 

@@ -78,13 +78,10 @@ class TodoItem extends Model
         }
     }
     
-    // (Optional bonus methods below)
     public static function toggleTodos()
     {
         try {
             $todos = static::findAll();
-            // echo "<pre>";
-            // die(var_dump($todos));
 
             $query = "UPDATE todos 
             SET completed = :completed";
@@ -95,10 +92,7 @@ class TodoItem extends Model
                 $todos, function($todo) {
                     return $todo['completed'] === "false";
                 }
-            )
-            );
-
-            // die(var_dump($todosLeft));
+            ));
 
             if ($todosLeft === 0) {
                 self::$db->bind(':completed', 'false');
