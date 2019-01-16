@@ -1,5 +1,6 @@
 <footer class="footer">
-    <span class="todo-count"><?= count(array_filter($todos, function($todo) { return $todo['completed'] === "false"; })) ?> item<?php count($todos) !== 1 ? "s" : "" ?> left</span>
+    <span class="todo-count">
+        <?= count(array_filter($todos, function($todo) { return $todo['completed'] === "false";}))?> item<?= count($todos) !== 1 ? "s" : "" ?> left</span>
     
     <form method="POST" action="/todos/clear-completed">
         <button class="clear-completed">Clear completed</button>
@@ -11,7 +12,7 @@
 <footer class="site-footer">
     <div class="small-container">
         <p class="text-center">Made by 
-            <a href="http://ellenstyrelius.chas.academy/">Ellen Styrélius</a>
+            <a href="http://ellenstyrelius.chas.academy/" target="_blank">Ellen Styrélius</a>
         </p>
     </div>
 </footer>

@@ -79,19 +79,43 @@ class TodoItem extends Model
     }
     
     // (Optional bonus methods below)
-    // public static function toggleTodos($completed)
-    // {
-    //     // TODO: Implement me!
-    //     // This is to toggle all todos either as completed or not completed
-    // }
+    public static function toggleTodos()
+    {
+        try {
+            $todos = static::findAll();
+            // echo "<pre>";
+            // die(var_dump($todos));
 
-    public static function clearCompletedTodos($completed)
+            $query = "UPDATE todos 
+            SET completed = :completed";
+
+            foreach ($todos as $todo) {
+                if ($todo['completed'] === 'false') {
+                    self::$db->bind(':completed', 'true');
+                } elseif ($todo['completed'] === 'true') {
+                    self::$db->bind(':completed', 'false');
+                }
+            }
+
+            $result = self::$db->execute();
+
+            if (!empty($result)) {
+                return $result;
+            } else {
+                throw new \Exception("Sry, something went wrong when trying to update :(");
+            }
+
+        } catch (PDOException $err) {
+            return $err->getMessage();
+        }
+    }
+
+    public static function clearCompletedTodos()
     {
         try {
             $query = "DELETE FROM todos WHERE completed = 'true'";
 
             $statement = self::$db->query($query);
-            // self::$db->bind(':id', $todoId);
 
             $result = self::$db->execute();
 
