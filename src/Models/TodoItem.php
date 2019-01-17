@@ -12,7 +12,7 @@ class TodoItem extends Model
             $query = "INSERT INTO todos (title, created, completed) 
             VALUES (:title, now(), 'false')";
 
-            $statement = self::$db->query($query);
+            self::$db->query($query);
             self::$db->bind(':title', $title);
 
             $result = self::$db->execute();
@@ -35,7 +35,7 @@ class TodoItem extends Model
             SET completed = :completed, title = :title
             WHERE id = :id";
 
-            $statement = self::$db->query($query);
+            self::$db->query($query);
             self::$db->bind(':id', $todoId);
             self::$db->bind(':title', $title);
 
@@ -63,7 +63,7 @@ class TodoItem extends Model
         try {
             $query = "DELETE FROM todos WHERE id = :id";
 
-            $statement = self::$db->query($query);
+            self::$db->query($query);
             self::$db->bind(':id', $todoId);
 
             $result = self::$db->execute();
@@ -86,7 +86,7 @@ class TodoItem extends Model
             $query = "UPDATE todos 
             SET completed = :completed";
 
-            $statement = self::$db->query($query);
+            self::$db->query($query);
 
             $todosLeft = count(array_filter(
                 $todos, function($todo) {
