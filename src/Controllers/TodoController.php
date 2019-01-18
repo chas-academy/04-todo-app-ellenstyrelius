@@ -42,7 +42,7 @@ class TodoController extends Controller {
 
     public function delete($urlParams)
     {
-        $result = TodoItem::deleteTodo($urlParams ['id']);
+        $result = TodoItem::deleteTodo($urlParams ['id']);    
 
         if ($result) {
           $this->redirect('/');
@@ -51,7 +51,15 @@ class TodoController extends Controller {
 
     public function toggle()
     {
-        $result = TodoItem::toggleTodos();
+        $todos = TodoItem::findAll();
+
+        $todosLeft = count(array_filter(
+            $todos, function($todo) {
+                return $todo['completed'] === 'false';
+            }
+        ));
+
+        $result = TodoItem::toggleTodos($todosLeft);
 
         if ($result) {
           $this->redirect('/');

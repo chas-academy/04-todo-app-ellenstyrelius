@@ -20,7 +20,7 @@ class TodoItem extends Model
             if (!empty($result)) {
                 return $result;
             } else {
-                throw new \Exception("Sry, something went wrong with the adding new todo :(");
+                throw new \Exception("Sry, something went wrong with the adding :(");
             }
 
         } catch (PDOException $err) {
@@ -50,7 +50,7 @@ class TodoItem extends Model
             if (!empty($result)) {
                 return $result;
             } else {
-                throw new \Exception("Sry, something went wrong when trying to update :(");
+                throw new \Exception("Sry, something went wrong with the updating :(");
             }
 
         } catch (PDOException $err) {
@@ -78,26 +78,18 @@ class TodoItem extends Model
         }
     }
     
-    public static function toggleTodos()
+    public static function toggleTodos($todosLeft)
     {
         try {
-            $todos = static::findAll();
-
             $query = "UPDATE todos 
             SET completed = :completed";
 
             self::$db->query($query);
 
-            $todosLeft = count(array_filter(
-                $todos, function($todo) {
-                    return $todo['completed'] === "false";
-                }
-            ));
-
-            if ($todosLeft === 0) {
-                self::$db->bind(':completed', 'false');
-            } elseif ($todosLeft >= 1) {
+            if ($todosLeft >= 1) {
                 self::$db->bind(':completed', 'true');
+            } else {
+                self::$db->bind(':completed', 'false');
             }
 
             $result = self::$db->execute();
@@ -105,7 +97,7 @@ class TodoItem extends Model
             if (!empty($result)) {
                 return $result;
             } else {
-                throw new \Exception("Sry, something went wrong when trying to update :(");
+                throw new \Exception("Sry, something went wrong with the updating :(");
             }
 
         } catch (PDOException $err) {
